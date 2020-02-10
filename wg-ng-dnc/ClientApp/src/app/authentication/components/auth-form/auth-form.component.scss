@@ -1,0 +1,30 @@
+:host {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
+mat-card {
+  padding: 0;
+  overflow: hidden;
+  mat-card-content {
+    padding: 15px;
+  }
+}
+
+mat-form-field {
+  margin-bottom: 15px;
+}
+
+.login-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}

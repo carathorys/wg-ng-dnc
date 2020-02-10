@@ -1,0 +1,10 @@
+.container
+    mat-toolbar(color="primary")
+        button(mat-icon-button)
+            mat-icon menu
+        | Wireguard Dashboard Angular version
+    mat-sidenav-container
+        mat-sidenav(#snav)
+            mat-nav-list
+        mat-sidenav-content
+            router-outlet
