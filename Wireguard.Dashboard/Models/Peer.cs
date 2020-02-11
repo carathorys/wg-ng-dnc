@@ -36,6 +36,7 @@ namespace Wireguard.Dashboard.Models
         /// <summary>
         /// Virtual IP address of the device
         /// </summary>
+        [Column(TypeName = "binary(8)")]
         public IPAddress VirtualIp { get; set; }
     }
 }

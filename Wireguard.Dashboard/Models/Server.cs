@@ -1,15 +1,19 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
+using System.Runtime.CompilerServices;
 
-namespace Wireguard.Dashboard.Data
+namespace Wireguard.Dashboard.Models
 {
     public class Server
     {
+        [Key] public Guid Id { get; set; }
+
         /// <summary>
         /// (Optional) The public IP address of this host
         /// </summary>
-        public IPAddress? PublicIp { get; set; }
+        public IPAddress PublicIp { get; set; }
 
         /// <summary>
         /// The port which should be used to listen incoming connections
@@ -44,6 +48,6 @@ namespace Wireguard.Dashboard.Data
         /// <summary>
         /// SecureDNS address 
         /// </summary>
-        public IPAddress? SecureDnsAddress { get; set; }
+        public IPAddress SecureDnsAddress { get; set; }
     }
 }

@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wireguard.Dashboard.Data;
 
 namespace Wireguard.Dashboard.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200211102800_CreateIdentitySchema")]
+    partial class CreateIdentitySchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -295,32 +297,6 @@ namespace Wireguard.Dashboard.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Wireguard.Dashboard.Models.Peer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("DeviceName")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("PreSharedKey")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<string>("PrivateKey")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<byte[]>("VirtualIp")
-                        .IsRequired()
-                        .HasColumnType("binary(8)")
-                        .IsFixedLength(true)
-                        .HasMaxLength(16);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Peer");
-                });
-
             modelBuilder.Entity("Wireguard.Dashboard.Models.Server", b =>
                 {
                     b.Property<Guid>("Id")
@@ -365,7 +341,7 @@ namespace Wireguard.Dashboard.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("888b5fb9-a897-4081-b08a-5427047dd0fb"),
+                            Id = new Guid("cdaa7c28-014a-4d2d-982e-86bf9ab3b6bf"),
                             CIDR = (byte)24,
                             EnableSecureDns = false,
                             NetworkAdapter = "eth0",
