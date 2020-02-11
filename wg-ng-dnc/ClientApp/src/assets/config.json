@@ -1,7 +1,0 @@
-{
-    "title": "Wireguard NG Dashboard",
-    "version": "0.0.0",
-    "production": false,
-    "environment": "dev",
-    "apiEndpoint": "/api"
-}
