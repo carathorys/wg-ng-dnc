@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "wg-ng-dnc", "wg-ng-dnc\wg-ng-dnc.csproj", "{E8B88DDA-B43B-4675-B057-05C6F16B3A95}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wireguard.Dashboard", "Wireguard.Dashboard\Wireguard.Dashboard.csproj", "{E8B88DDA-B43B-4675-B057-05C6F16B3A95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
