@@ -1,5 +1,4 @@
-﻿using wg_ng_dnc.Models;
-using IdentityServer4.EntityFramework.Options;
+﻿using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -7,8 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Wireguard.Dashboard.Models;
 
-namespace wg_ng_dnc.Data
+namespace Wireguard.Dashboard.Data
 {
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
@@ -17,5 +17,8 @@ namespace wg_ng_dnc.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+
+        public DbSet<Server> Server { get; set; }
+        public DbSet<Peer> Peers { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace wg_ng_dnc.Data.Migrations
+namespace Wireguard.Dashboard.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

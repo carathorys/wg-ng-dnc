@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace wg_ng_dnc.Controllers
+namespace Wireguard.Dashboard.Controllers
 {
     public class OidcConfigurationController : Controller
     {

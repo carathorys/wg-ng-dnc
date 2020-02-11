@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace wg_ng_dnc
+namespace Wireguard.Dashboard
 {
     public class Program
     {

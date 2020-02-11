@@ -1,6 +1,6 @@
 using System;
 
-namespace wg_ng_dnc
+namespace Wireguard.Dashboard
 {
     public class WeatherForecast
     {

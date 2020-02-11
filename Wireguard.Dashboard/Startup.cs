@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
-using wg_ng_dnc.Data;
-using wg_ng_dnc.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Wireguard.Dashboard.Data;
+using Wireguard.Dashboard.Models;
 
-namespace wg_ng_dnc
+namespace Wireguard.Dashboard
 {
     public class Startup
     {
@@ -32,10 +32,10 @@ namespace wg_ng_dnc
 
             services.AddDefaultIdentity<ApplicationUser>(options =>
                 options.SignIn.RequireConfirmedAccount = true
-            ); //.AddEntityFrameworkStores<ApplicationDbContext>();
+            ).AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.AddPamStores();
-            
+            // services.AddPamStores();
+
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 

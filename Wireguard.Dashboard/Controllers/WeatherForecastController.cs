@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace wg_ng_dnc.Controllers
+namespace Wireguard.Dashboard.Controllers
 {
     [Authorize]
     [ApiController]
