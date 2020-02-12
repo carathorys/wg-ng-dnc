@@ -32,6 +32,7 @@
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ClientApp" />
     <Folder Include="Data\Migrations" />
   </ItemGroup>
   <ItemGroup>
