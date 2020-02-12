@@ -1,0 +1,3 @@
+[submodule "ClientApp"]
+	path = Wireguard.Dashboard/ClientApp
+	url = git@github.com:carathorys/wg-ng.git
