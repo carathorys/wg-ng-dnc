@@ -6,10 +6,8 @@ using System.Runtime.CompilerServices;
 
 namespace Wireguard.Dashboard.Models
 {
-    public class Server
+    public class Server: IEntity
     {
-        [Key] public Guid Id { get; set; }
-
         /// <summary>
         /// (Optional) The public IP address of this host
         /// </summary>
@@ -49,5 +47,11 @@ namespace Wireguard.Dashboard.Models
         /// SecureDNS address 
         /// </summary>
         public IPAddress SecureDnsAddress { get; set; }
+
+        public Guid Id { get; set; }
+        public ApplicationUser CreatedBy { get; set; }
+        public ApplicationUser UpdatedBy { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
     }
 }

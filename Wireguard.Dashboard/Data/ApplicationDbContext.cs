@@ -40,18 +40,6 @@ namespace Wireguard.Dashboard.Data
                     .HasMaxLength(16)
                     .IsFixedLength()
                     .HasConversion(converter);
-
-                e.HasData(new Server()
-                {
-                    Id = Guid.NewGuid(),
-                    Port = 8019,
-                    NetworkAdapter = "eth0",
-                    PublicIp = IPAddress.Any,
-                    VirtualAddress = IPAddress.IPv6Loopback,
-                    EnableSecureDns = false,
-                    WireguardAdapterName = "wg0",
-                    CIDR = 24
-                });
             });
 
             builder.Entity<Peer>(e =>
@@ -67,6 +55,6 @@ namespace Wireguard.Dashboard.Data
         }
 
         public DbSet<Server> Server { get; set; }
-        // public DbSet<Peer> Peers { get; set; }
+        public DbSet<Peer> Peers { get; set; }
     }
 }

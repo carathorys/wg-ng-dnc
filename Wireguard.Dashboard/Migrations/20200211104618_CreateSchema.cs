@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Wireguard.Dashboard.Data.Migrations
+namespace Wireguard.Dashboard.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class CreateSchema : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -79,25 +79,6 @@ namespace Wireguard.Dashboard.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PersistedGrants", x => x.Key);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Server",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    PublicIp = table.Column<byte[]>(fixedLength: true, maxLength: 16, nullable: true),
-                    Port = table.Column<ushort>(nullable: true),
-                    NetworkAdapter = table.Column<string>(nullable: true),
-                    VirtualAddress = table.Column<byte[]>(fixedLength: true, maxLength: 16, nullable: false),
-                    WireguardAdapterName = table.Column<string>(nullable: true),
-                    CIDR = table.Column<byte>(nullable: false),
-                    EnableSecureDns = table.Column<bool>(nullable: false),
-                    SecureDnsAddress = table.Column<byte[]>(fixedLength: true, maxLength: 16, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Server", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -206,10 +187,71 @@ namespace Wireguard.Dashboard.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Server",
-                columns: new[] { "Id", "CIDR", "EnableSecureDns", "NetworkAdapter", "Port", "PublicIp", "SecureDnsAddress", "VirtualAddress", "WireguardAdapterName" },
-                values: new object[] { new Guid("cdaa7c28-014a-4d2d-982e-86bf9ab3b6bf"), (byte)24, false, "eth0", (ushort)8019, new byte[] { 0, 0, 0, 0 }, null, new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 }, "wg0" });
+            migrationBuilder.CreateTable(
+                name: "Peer",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CreatedById = table.Column<string>(nullable: true),
+                    UpdatedById = table.Column<string>(nullable: true),
+                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false),
+                    DeviceName = table.Column<string>(nullable: true),
+                    PreSharedKey = table.Column<string>(nullable: true),
+                    PrivateKey = table.Column<string>(nullable: true),
+                    VirtualIp = table.Column<byte[]>(type: "binary(8)", fixedLength: true, maxLength: 16, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Peer", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Peer_AspNetUsers_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Peer_AspNetUsers_UpdatedById",
+                        column: x => x.UpdatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Server",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    PublicIp = table.Column<byte[]>(fixedLength: true, maxLength: 16, nullable: true),
+                    Port = table.Column<ushort>(nullable: true),
+                    NetworkAdapter = table.Column<string>(nullable: true),
+                    VirtualAddress = table.Column<byte[]>(fixedLength: true, maxLength: 16, nullable: false),
+                    WireguardAdapterName = table.Column<string>(nullable: true),
+                    CIDR = table.Column<byte>(nullable: false),
+                    EnableSecureDns = table.Column<bool>(nullable: false),
+                    SecureDnsAddress = table.Column<byte[]>(fixedLength: true, maxLength: 16, nullable: true),
+                    CreatedById = table.Column<string>(nullable: true),
+                    UpdatedById = table.Column<string>(nullable: true),
+                    CreatedAt = table.Column<DateTimeOffset>(nullable: false),
+                    UpdatedAt = table.Column<DateTimeOffset>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Server", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Server_AspNetUsers_CreatedById",
+                        column: x => x.CreatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Server_AspNetUsers_UpdatedById",
+                        column: x => x.UpdatedById,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -260,6 +302,16 @@ namespace Wireguard.Dashboard.Data.Migrations
                 column: "Expiration");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Peer_CreatedById",
+                table: "Peer",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Peer_UpdatedById",
+                table: "Peer",
+                column: "UpdatedById");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_Expiration",
                 table: "PersistedGrants",
                 column: "Expiration");
@@ -268,6 +320,16 @@ namespace Wireguard.Dashboard.Data.Migrations
                 name: "IX_PersistedGrants_SubjectId_ClientId_Type",
                 table: "PersistedGrants",
                 columns: new[] { "SubjectId", "ClientId", "Type" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Server_CreatedById",
+                table: "Server",
+                column: "CreatedById");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Server_UpdatedById",
+                table: "Server",
+                column: "UpdatedById");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -289,6 +351,9 @@ namespace Wireguard.Dashboard.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "DeviceCodes");
+
+            migrationBuilder.DropTable(
+                name: "Peer");
 
             migrationBuilder.DropTable(
                 name: "PersistedGrants");

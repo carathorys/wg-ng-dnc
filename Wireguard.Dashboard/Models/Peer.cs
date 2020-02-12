@@ -5,12 +5,17 @@ using System.Security;
 
 namespace Wireguard.Dashboard.Models
 {
-    public class Peer
+    public class Peer: IEntity
     {
         /// <summary>
         /// The ID of the peer
         /// </summary>
         public Guid Id { get; set; }
+
+        public ApplicationUser CreatedBy { get; set; }
+        public ApplicationUser UpdatedBy { get; set; }
+        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset UpdatedAt { get; set; }
 
         /// <summary>
         /// Publicly visible name of the device

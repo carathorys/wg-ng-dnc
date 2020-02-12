@@ -2,17 +2,15 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Wireguard.Dashboard.Data;
 
-namespace Wireguard.Dashboard.Data.Migrations
+namespace Wireguard.Dashboard.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200211103214_PeerTableAdded")]
-    partial class PeerTableAdded
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -303,6 +301,12 @@ namespace Wireguard.Dashboard.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
                     b.Property<string>("DeviceName")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -312,6 +316,12 @@ namespace Wireguard.Dashboard.Data.Migrations
                     b.Property<string>("PrivateKey")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
                     b.Property<byte[]>("VirtualIp")
                         .IsRequired()
                         .HasColumnType("binary(8)")
@@ -319,6 +329,10 @@ namespace Wireguard.Dashboard.Data.Migrations
                         .HasMaxLength(16);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("UpdatedById");
 
                     b.ToTable("Peer");
                 });
@@ -331,6 +345,12 @@ namespace Wireguard.Dashboard.Data.Migrations
 
                     b.Property<byte>("CIDR")
                         .HasColumnType("tinyint unsigned");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<bool>("EnableSecureDns")
                         .HasColumnType("tinyint(1)");
@@ -351,6 +371,12 @@ namespace Wireguard.Dashboard.Data.Migrations
                         .IsFixedLength(true)
                         .HasMaxLength(16);
 
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
                     b.Property<byte[]>("VirtualAddress")
                         .IsRequired()
                         .HasColumnType("binary(16)")
@@ -362,20 +388,11 @@ namespace Wireguard.Dashboard.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Server");
+                    b.HasIndex("CreatedById");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("888b5fb9-a897-4081-b08a-5427047dd0fb"),
-                            CIDR = (byte)24,
-                            EnableSecureDns = false,
-                            NetworkAdapter = "eth0",
-                            Port = (ushort)8019,
-                            PublicIp = new byte[] { 0, 0, 0, 0 },
-                            VirtualAddress = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-                            WireguardAdapterName = "wg0"
-                        });
+                    b.HasIndex("UpdatedById");
+
+                    b.ToTable("Server");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -427,6 +444,28 @@ namespace Wireguard.Dashboard.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Wireguard.Dashboard.Models.Peer", b =>
+                {
+                    b.HasOne("Wireguard.Dashboard.Models.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("Wireguard.Dashboard.Models.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+                });
+
+            modelBuilder.Entity("Wireguard.Dashboard.Models.Server", b =>
+                {
+                    b.HasOne("Wireguard.Dashboard.Models.ApplicationUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("Wireguard.Dashboard.Models.ApplicationUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
                 });
 #pragma warning restore 612, 618
         }
