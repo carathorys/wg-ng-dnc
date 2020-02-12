@@ -21,6 +21,7 @@ namespace Wireguard.Dashboard.Models
         /// <summary>
         /// The network adapter which should be used to forward the traffic
         /// </summary>
+        [MaxLength(255)]
         public string NetworkAdapter { get; set; }
 
         /// <summary>
@@ -31,6 +32,7 @@ namespace Wireguard.Dashboard.Models
         /// <summary>
         /// Wireguard adapter name
         /// </summary>
+        [MaxLength(255)]
         public string WireguardAdapterName { get; set; }
 
         /// <summary>
@@ -49,8 +51,8 @@ namespace Wireguard.Dashboard.Models
         public IPAddress SecureDnsAddress { get; set; }
 
         public Guid Id { get; set; }
-        public ApplicationUser CreatedBy { get; set; }
-        public ApplicationUser UpdatedBy { get; set; }
+        // public ApplicationUser CreatedBy { get; set; }
+        // public ApplicationUser UpdatedBy { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
     }

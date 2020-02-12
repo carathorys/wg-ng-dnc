@@ -1,17 +1,15 @@
-using System.Runtime.InteropServices;
-using Microsoft.AspNetCore.Authentication;
+using System.Collections.Generic;
+using System.Reflection;
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Wireguard.Dashboard.Data;
-using Wireguard.Dashboard.Models;
+using Wireguard.Dashboard.Services;
+using Wireguard.Dashboard.Services.Validators;
 
 namespace Wireguard.Dashboard
 {
@@ -27,32 +25,71 @@ namespace Wireguard.Dashboard
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), builder =>
-                    {
-                        builder.CharSet(Pomelo.EntityFrameworkCore.MySql.Storage.CharSet.Utf8Mb4);
-                    });
-                // options.UseSqlite(
-                //     Configuration.GetConnectionString("DefaultConnection"),
-                //     builder => { builder.UseRelationalNulls(); });
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+                    builder => { builder.CharSet(Pomelo.EntityFrameworkCore.MySql.Storage.CharSet.Utf8Mb4); });
             });
 
-            services.AddDefaultIdentity<ApplicationUser>(options =>
-                options.SignIn.RequireConfirmedAccount = true
-            ).AddEntityFrameworkStores<ApplicationDbContext>();
-
-            // services.AddPamStores();
-
-            services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
-
-            services.AddAuthentication()
-                .AddIdentityServerJwt();
-            services.AddControllersWithViews();
-            services.AddRazorPages();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
+
+            services.AddControllers();
+
+            services.AddIdentityServer(builder =>
+                {
+                    builder.InputLengthRestrictions.Password = ushort.MaxValue;
+                    builder.Events.RaiseErrorEvents = true;
+                    builder.Events.RaiseFailureEvents = true;
+                    builder.Events.RaiseInformationEvents = true;
+                    builder.Events.RaiseSuccessEvents = true;
+                    builder.Discovery.ShowTokenEndpointAuthenticationMethods = true;
+                })
+                .AddDeveloperSigningCredential()
+                .AddConfigurationStore(o =>
+                {
+                    o.ConfigureDbContext = b => b.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+                        m =>
+                        {
+                            m.MigrationsAssembly(migrationsAssembly);
+                            m.CharSet(Pomelo.EntityFrameworkCore.MySql.Storage.CharSet.Utf8Mb4);
+                        });
+                })
+                .AddOperationalStore(o =>
+                {
+                    o.ConfigureDbContext = b => b.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
+                        m =>
+                        {
+                            m.MigrationsAssembly(migrationsAssembly);
+                            m.CharSet(Pomelo.EntityFrameworkCore.MySql.Storage.CharSet.Utf8Mb4);
+                        });
+                })
+                .AddResourceOwnerValidator<UsernamePasswordValidator>()
+                .AddProfileService<ProfileService>();
+                // .AddInMemoryClients(new[]
+                // {
+                //     new Client()
+                //     {
+                //         Enabled = true,
+                //         ClientId = "ng_wg_dashboard2",
+                //         ClientSecrets = new[] {new Secret("abc123")},
+                //         RequireClientSecret = false,
+                //         ProtocolType = "oidc",
+                //
+                //         ClientUri = "https://localhost:5001",
+                //         RedirectUris = new[]
+                //         {
+                //             "https://localhost:5001/assets/signin-callback.html",
+                //             "https://localhost:5001/assets/silent-refresh.html"
+                //         },
+                //         AccessTokenType = AccessTokenType.Jwt,
+                // AllowedGrantTypes = GrantTypes.ResourceOwnerPassword
+                //     }
+                // })
+                ;
+
+            services.AddMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,7 +98,6 @@ namespace Wireguard.Dashboard
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {
@@ -72,22 +108,20 @@ namespace Wireguard.Dashboard
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
             }
 
             app.UseRouting();
-
-            app.UseAuthentication();
             app.UseIdentityServer();
-            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-                endpoints.MapRazorPages();
             });
 
             app.UseSpa(spa =>
@@ -99,7 +133,8 @@ namespace Wireguard.Dashboard
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseAngularCliServer(npmScript: "start");
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                    // spa.UseAngularCliServer(npmScript: "start");
                 }
             });
         }

@@ -10,10 +10,10 @@ namespace Wireguard.Dashboard.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         
-        [Required]
-        public ApplicationUser CreatedBy { get; set; }
-        [Required]
-        public ApplicationUser UpdatedBy { get; set; }
+        // [Required]
+        // public ApplicationUser CreatedBy { get; set; }
+        // [Required]
+        // public ApplicationUser UpdatedBy { get; set; }
 
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

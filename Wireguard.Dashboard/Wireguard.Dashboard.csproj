@@ -15,11 +15,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="IdentityServer4.AspNetIdentity" Version="3.1.1" />
+    <PackageReference Include="IdentityServer4.EntityFramework" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="3.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1" />
@@ -33,10 +31,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ClientApp" />
-    <Folder Include="Data\Migrations" />
   </ItemGroup>
   <ItemGroup>
     <_ContentIncludedByDefault Remove="ClientApp\package-lock.json" />
+    <_ContentIncludedByDefault Remove="Pages\Shared\_LoginPartial.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Error.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\_ViewImports.cshtml" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

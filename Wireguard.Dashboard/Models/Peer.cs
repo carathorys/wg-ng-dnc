@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Net;
 using System.Security;
@@ -12,14 +13,15 @@ namespace Wireguard.Dashboard.Models
         /// </summary>
         public Guid Id { get; set; }
 
-        public ApplicationUser CreatedBy { get; set; }
-        public ApplicationUser UpdatedBy { get; set; }
+        // public ApplicationUser CreatedBy { get; set; }
+        // public ApplicationUser UpdatedBy { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public DateTimeOffset UpdatedAt { get; set; }
 
         /// <summary>
         /// Publicly visible name of the device
         /// </summary>
+        [MaxLength(255)]
         public string DeviceName { get; set; }
 
         /// <summary>
@@ -31,11 +33,13 @@ namespace Wireguard.Dashboard.Models
         /// <summary>
         /// PreShared key
         /// </summary>
+        [MaxLength(255)]
         public string PreSharedKey { get; set; }
 
         /// <summary>
         /// PrivateKey of the device
         /// </summary>
+        [MaxLength(255)]
         public string PrivateKey { get; set; }
 
         /// <summary>
